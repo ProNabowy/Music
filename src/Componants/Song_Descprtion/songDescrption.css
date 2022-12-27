@@ -1,0 +1,9 @@
+@media (max-width: 768px) {
+    .song-name {
+        text-align: center;
+    }
+    .descrption {
+        max-width: 100% !important;
+        text-align: center;
+    }
+}

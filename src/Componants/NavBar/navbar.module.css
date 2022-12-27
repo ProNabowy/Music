@@ -1,0 +1,136 @@
+.navWrapper {
+  padding: 20px !important;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+/* Thumb scroller */
+.navBar::-webkit-scrollbar {
+  width: 8px;
+}
+.navBar::-webkit-scrollbar-track {
+  background-color: #f8f8f8;
+  box-shadow: 0 0 80px #ddd inset;
+}
+.navBar::-webkit-scrollbar-thumb {
+  background-color:var(--second-color);
+}
+.navWrapper h4 {
+    color: var(--text-color);
+}
+.navWrapper .logo::after {
+    content: "";
+    background-color: var(--text-color);
+    width: 50%;
+    height: 2px;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+}
+
+.navWrapper .logo::before {
+    content: "";
+    width: 15px;
+    height: 15px;
+    background-color: var(--text-color);
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    bottom: -5px;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+.navWrapper .logo {
+  width: 100%;
+  margin-bottom: 30px !important;
+}
+.navWrapper ul {
+  padding: 0 !important;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.link_item a {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 5px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 16px;
+  white-space: nowrap;
+  text-transform: capitalize;
+  position: relative;
+  color: var(--text-color);
+}
+.link_item a span {
+  transition: transform 0.5s;
+}
+.link_item:hover a {
+  color: var(--link-color) !important;
+}
+
+.link_item svg {
+  min-width: 20px;
+  min-height: 20px;
+  margin-right: 20px !important;
+}
+.link_item:hover {
+    -webkit-animation: tracking-in-contract 0.8s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+    animation: tracking-in-contract 1s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+}
+
+
+/* animation */
+@-webkit-keyframes tracking-in-contract {
+    0% {
+        letter-spacing: 1em;
+        opacity: 0;
+    }
+
+    40% {
+        opacity: 0.6;
+    }
+
+    100% {
+        letter-spacing: normal;
+        opacity: 1;
+    }
+}
+
+@keyframes tracking-in-contract {
+    0% {
+        letter-spacing: 1em;
+        opacity: 0;
+    }
+
+    40% {
+        opacity: 0.6;
+    }
+
+    100% {
+        letter-spacing: normal;
+        opacity: 1;
+    }
+}
+
+@keyframes lds-roller {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* 
+  ============================================================================= Responsive ===================================================================================
+*/
+
+@media (max-width: 991px) {
+  .navBar {
+    width: 100% !important;
+    order: 5;
+  }
+}

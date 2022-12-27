@@ -1,0 +1,23 @@
+
+.icone {
+    background-color: white;
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.navSong:hover {
+    background-color: #192133 !important;
+    transition: var(--main-transtion);
+}
+
+@media (max-width: 991px) {
+    .navSong {
+        width: 100% !important;
+    }
+}

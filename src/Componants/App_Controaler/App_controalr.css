@@ -1,0 +1,7 @@
+@media (max-width: 991px) {
+    .app-controlar {
+        width: 100% !important;
+        background-position: 100% 0% !important;
+        order: -1;
+    }
+}
