@@ -191,7 +191,7 @@ export const control_thumb = () =>
         let seek_dot = document.querySelector("#seek_dot");
         let progress = parseInt((audio.currentTime / audio.duration) * 100);
 
-        thumb.value = progress;
+        thumb.value = progress || 0;
         let seekbar = thumb.value;
 
         // set new width to seek and seek_dot
