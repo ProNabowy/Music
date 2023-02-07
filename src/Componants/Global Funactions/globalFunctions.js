@@ -214,6 +214,7 @@ export const voule_handler = () =>
             volume_icone.classList.remove("fa-volume");
             volume_icone.classList.remove("fa-volume-high");
             volume_icone.classList.add("fa-volume-xmark");
+            audio.muted = true;
         } else if (volume.value <= 50)
         {
             volume_icone.classList.remove("fa-volume-xmark");
@@ -225,7 +226,7 @@ export const voule_handler = () =>
             volume_icone.classList.remove("fa-volume-low");
             volume_icone.classList.add("fa-volume-high");
         }
-
+           audio.volume = volume.value / 100;
     });
 
 }
