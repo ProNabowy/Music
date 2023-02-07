@@ -98,70 +98,53 @@ export const timeUpdate = () =>
     let thumb_icone = document.querySelector(".thumb-icone");
 
     // set a valid time to html elements 
-    audio.addEventListener("timeupdate", _ =>
-    {
+export const timeUpdate = () => {
+  const start_Time = document.querySelector(".start-time");
+  const end_Time = document.querySelector(".end-time");
+  const thumb_icone = document.querySelector(".thumb-icone");
 
-        thumb_icone.classList.add("fa-pause");
-        thumb_icone.classList.remove("fa-play");
-        
-        // start
+  audio.addEventListener("timeupdate", () => {
+    thumb_icone.classList.remove("fa-play");
+    thumb_icone.classList.add("fa-pause");
 
-        const audio_duration = audio.duration;
-        let min = Math.floor(audio_duration / 60);
-        const audio_CurrentTime = audio.currentTime;
+    let audio_duration = audio.duration;
+    let audio_current_time = audio.currentTime;
 
-        let start_min = Math.floor(audio_CurrentTime / 60);
-        let start_sec = Math.floor(audio_CurrentTime % 60);
+    let start_minutes = Math.floor(audio_current_time / 60);
+    let start_seconds = Math.floor(audio_current_time % 60);
+    let start_hours = 0;
 
-        if (start_min < 10)
-        {
-            start_min = "0" + start_min;
-        }
-        if (start_sec < 10)
-        {
-            start_sec = "0" + start_sec;
-        }
+    if (start_minutes >= 60) {
+      start_hours = Math.floor(start_minutes / 60);
+      start_minutes = start_minutes % 60;
+    }
 
-        start_Time.innerHTML = start_min + ":" + start_sec;
+    if (start_minutes < 10) start_minutes = `0${start_minutes}`;
+    if (start_seconds < 10) start_seconds = `0${start_seconds}`;
 
-        // end
+    start_Time.innerHTML = `${start_hours}:${start_minutes}:${start_seconds}`;
 
-        let end_sec = audio_duration - start_sec;
-        let end_mins = min - start_min;
-        let end_secs = Math.floor((end_sec % 60) % 60);
+    let end_minutes = Math.floor((audio_duration - audio_current_time) / 60);
+    let end_seconds = Math.floor((audio_duration - audio_current_time) % 60);
+    let end_hours = 0;
 
-        if (end_secs < 10)
-        {
-            end_secs = "0" + end_secs;
-        };
-        if (end_mins < 10)
-        {
-            end_mins = "0" + end_mins;
-        };
-        end_Time.innerHTML = end_mins + ":" + end_secs;
+    if (end_minutes >= 60) {
+      end_hours = Math.floor(end_minutes / 60);
+      end_minutes = end_minutes % 60;
+    }
 
-        if (audio.paused)
-        {
-            thumb_icone.classList.add("fa-play");
-            thumb_icone.classList.remove("fa-pause");
-        }
+    if (end_seconds < 10) end_seconds = `0${end_seconds}`;
+    if (end_minutes < 10) end_minutes = `0${end_minutes}`;
 
-        // Call animation
+    end_Time.innerHTML = `${end_hours}:${end_minutes}:${end_seconds}`;
 
-        let song_play = false;
+    if (audio.paused) {
+      thumb_icone.classList.remove("fa-pause");
+      thumb_icone.classList.add("fa-play");
+    }
 
-        if (audio.played)
-        {
-            song_play = true;
-        }
-        if (audio.paused)
-        {
-            song_play = false;
-        }
-        
-        play_animation(song_play);
-
-    });
+    play_animation(!audio.paused);
+  });
 };
 
 // this functio to reset cureent audio time when audio ended
