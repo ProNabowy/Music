@@ -95,58 +95,55 @@ export const timeUpdate = () =>
 {
     const start_Time = document.querySelector(".start-time");
     const end_Time = document.querySelector(".end-time");
-    let thumb_icone = document.querySelector(".thumb-icone");
+    const thumb_icone = document.querySelector(".thumb-icone");
 
-    // set a valid time to html elements 
-export const timeUpdate = () => {
-  const start_Time = document.querySelector(".start-time");
-  const end_Time = document.querySelector(".end-time");
-  const thumb_icone = document.querySelector(".thumb-icone");
+    audio.addEventListener("timeupdate", () =>
+    {
+        thumb_icone.classList.remove("fa-play");
+        thumb_icone.classList.add("fa-pause");
 
-  audio.addEventListener("timeupdate", () => {
-    thumb_icone.classList.remove("fa-play");
-    thumb_icone.classList.add("fa-pause");
+        let audio_duration = audio.duration;
+        let audio_current_time = audio.currentTime;
 
-    let audio_duration = audio.duration;
-    let audio_current_time = audio.currentTime;
+        let start_minutes = Math.floor(audio_current_time / 60);
+        let start_seconds = Math.floor(audio_current_time % 60);
+        let start_hours = 0;
 
-    let start_minutes = Math.floor(audio_current_time / 60);
-    let start_seconds = Math.floor(audio_current_time % 60);
-    let start_hours = 0;
+        if (start_minutes >= 60)
+        {
+            start_hours = Math.floor(start_minutes / 60);
+            start_minutes = start_minutes % 60;
+        }
 
-    if (start_minutes >= 60) {
-      start_hours = Math.floor(start_minutes / 60);
-      start_minutes = start_minutes % 60;
-    }
+        if (start_minutes < 10) start_minutes = `0${start_minutes}`;
+        if (start_seconds < 10) start_seconds = `0${start_seconds}`;
 
-    if (start_minutes < 10) start_minutes = `0${start_minutes}`;
-    if (start_seconds < 10) start_seconds = `0${start_seconds}`;
+        start_Time.innerHTML = `${start_hours}:${start_minutes}:${start_seconds}`;
 
-    start_Time.innerHTML = `${start_hours}:${start_minutes}:${start_seconds}`;
+        let end_minutes = Math.floor((audio_duration - audio_current_time) / 60);
+        let end_seconds = Math.floor((audio_duration - audio_current_time) % 60);
+        let end_hours = 0;
 
-    let end_minutes = Math.floor((audio_duration - audio_current_time) / 60);
-    let end_seconds = Math.floor((audio_duration - audio_current_time) % 60);
-    let end_hours = 0;
+        if (end_minutes >= 60)
+        {
+            end_hours = Math.floor(end_minutes / 60);
+            end_minutes = end_minutes % 60;
+        }
 
-    if (end_minutes >= 60) {
-      end_hours = Math.floor(end_minutes / 60);
-      end_minutes = end_minutes % 60;
-    }
+        if (end_seconds < 10) end_seconds = `0${end_seconds}`;
+        if (end_minutes < 10) end_minutes = `0${end_minutes}`;
 
-    if (end_seconds < 10) end_seconds = `0${end_seconds}`;
-    if (end_minutes < 10) end_minutes = `0${end_minutes}`;
+        end_Time.innerHTML = `${end_hours}:${end_minutes}:${end_seconds}`;
 
-    end_Time.innerHTML = `${end_hours}:${end_minutes}:${end_seconds}`;
+        if (audio.paused)
+        {
+            thumb_icone.classList.remove("fa-pause");
+            thumb_icone.classList.add("fa-play");
+        }
 
-    if (audio.paused) {
-      thumb_icone.classList.remove("fa-pause");
-      thumb_icone.classList.add("fa-play");
-    }
-
-    play_animation(!audio.paused);
-  });
+        play_animation(!audio.paused);
+    });
 };
-
 // this functio to reset cureent audio time when audio ended
 
 const audio_ended = () =>
@@ -166,28 +163,22 @@ const audio_ended = () =>
 // control thumb to play when audio playing
 export const control_thumb = () =>
 {
-
-    audio.addEventListener("timeupdate", _ =>
+    audio.addEventListener("timeupdate", () =>
     {
         const thumb = document.querySelector("#thumb");
-        let seek = document.querySelector("#seek");
-        let seek_dot = document.querySelector("#seek_dot");
-        let progress = parseInt((audio.currentTime / audio.duration) * 100);
+        const seek = document.querySelector("#seek");
+        const seekDot = document.querySelector("#seek_dot");
+        const progress = parseInt((audio.currentTime / audio.duration) * 100) || 0;
+        thumb.value = progress;
 
-        thumb.value = progress || 0;
-        let seekbar = thumb.value;
+        seek.style.width = `${thumb.value}%`;
+        seekDot.style.left = `${thumb.value}%`;
 
-        // set new width to seek and seek_dot
-        seek.style.width = `${seekbar}%`;
-        seek_dot.style.left = `${seekbar}%`;
-
-        // update current audio time when user update seek
         thumb.addEventListener("change", () =>
         {
             audio.currentTime = thumb.value * audio.duration / 100;
         });
 
-        // calling audio_ended to reset cureent audio time
         audio_ended();
     });
 }
@@ -197,36 +188,34 @@ export const control_thumb = () =>
 export const voule_handler = () =>
 {
     const volume = document.querySelector("#thumb-volume");
-    let volume_icone = document.querySelector(".volume-icone");
+    const volumeIcon = document.querySelector(".volume-icone");
     const thumb = document.querySelector(".volume-controlar .thumb-ui");
-    let seek_dot = document.querySelector(".volume-controlar .thumb-cricle");
+    const seekDot = document.querySelector(".volume-controlar .thumb-cricle");
 
     volume.addEventListener("change", () =>
     {
-        // set new thumb width
         thumb.style.width = `${volume.value}%`;
-        seek_dot.style.left = `${volume.value}%`;
-
-        
-        // change icone when value changed
-        if (Number(volume.value) === 0)
+        seekDot.style.left = `${volume.value}%`;
+        if (+volume.value === 0)
         {
-            volume_icone.classList.remove("fa-volume");
-            volume_icone.classList.remove("fa-volume-high");
-            volume_icone.classList.add("fa-volume-xmark");
+            volumeIcon.classList.remove("fa-volume");
+            volumeIcon.classList.remove("fa-volume-high");
+            volumeIcon.classList.add("fa-volume-xmark");
             audio.muted = true;
         } else if (volume.value <= 50)
         {
-            volume_icone.classList.remove("fa-volume-xmark");
-            volume_icone.classList.remove("fa-volume-high");
-            volume_icone.classList.add("fa-volume-low");
+            audio.muted = false;
+            volumeIcon.classList.remove("fa-volume-xmark");
+            volumeIcon.classList.remove("fa-volume-high");
+            volumeIcon.classList.add("fa-volume-low");
         } else if (volume.value > 50)
         {
-            volume_icone.classList.remove("fa-volume-xmark");
-            volume_icone.classList.remove("fa-volume-low");
-            volume_icone.classList.add("fa-volume-high");
+            audio.muted = false;
+            volumeIcon.classList.remove("fa-volume-xmark");
+            volumeIcon.classList.remove("fa-volume-low");
+            volumeIcon.classList.add("fa-volume-high");
         }
-           audio.volume = volume.value / 100;
+        audio.volume = volume.value / 100;
     });
 
 }
